@@ -1,8 +1,5 @@
-from concurrent.futures import thread
-from numpy import var
 import pygetwindow as gw
 import pyautogui as gui
-import cv2
 import tkinter as tk
 import time
 import threading
@@ -28,7 +25,7 @@ class StoppableThread(threading.Thread):
 
     def stopped(self):
         if self._stop_event.is_set():
-            print("stopped.")
+            #print("stopped.")
             return True
 
 
@@ -300,7 +297,7 @@ def event_kb_esc():
     win.destroy()
 
     if worker_thread:
-        print("worker stopped.")
+        #print("worker stopped.")
         worker_thread.stop()
 
     exit()
@@ -358,18 +355,18 @@ if __name__ == '__main__':
     ### Get conf ###
     conf = dict()
 
-
-    with open("macro.config") as f: # TODO: pwd
-        while 1:
-            try:
-                k = f.readline().strip().split(' ')
-                conf[k[0]] = k[1]
-            except:
-                break
-
-
-
-
+    try:
+        with open("macro.config") as f: # TODO: pwd
+            while 1:
+                try:
+                    k = f.readline().strip().split(' ')
+                    conf[k[0]] = k[1]
+                except:
+                    break
+    except:
+        conf["PLAYER_WINDOWNAME"] = "proseka"
+        conf["PROSEKA_REPEAT"] = 50
+        conf["PROSEKA_REFILL_RATE"] = 2
 
     ### Global state ###
     toggle_click = False
@@ -386,6 +383,7 @@ if __name__ == '__main__':
 
     win = tk.Tk()
     win.geometry("250x500+200+200")
+    win.title("macro")
     win.resizable(0, 0)
 
     tk.Label(win, text="Shortcuts", anchor="w").pack(fill="x")
@@ -434,19 +432,19 @@ if __name__ == '__main__':
     e4.insert(0, string=conf["PROSEKA_REFILL_RATE"])
     
     tk.Label(f2, text="클릭 속도").grid(row=0, column=0, sticky=tk.W)
-    tk.Label(f2, text="딜레이").grid(row=1, column=0, sticky=tk.W)
-    tk.Label(f2, text="반복 횟수").grid(row=2, column=0, sticky=tk.W)
-    tk.Label(f2, text="리필 주기").grid(row=3, column=0, sticky=tk.W)
+    #tk.Label(f2, text="딜레이").grid(row=1, column=0, sticky=tk.W)
+    tk.Label(f2, text="반복 횟수").grid(row=1, column=0, sticky=tk.W)
+    tk.Label(f2, text="리필 주기").grid(row=2, column=0, sticky=tk.W)
     
     s1.grid(row=0, column=1)
     l1.grid(row=0, column=2)
-    s2.grid(row=1, column=1)
-    l2.grid(row=1, column=2)
-    e3.grid(row=2, column=1, sticky=tk.W)
-    e4.grid(row=3, column=1, sticky=tk.W)
+    #s2.grid(row=1, column=1)
+    #l2.grid(row=1, column=2)
+    e3.grid(row=1, column=1, sticky=tk.W)
+    e4.grid(row=2, column=1, sticky=tk.W)
 
     tk.Label(f2, text="clicks/s").grid(row=0, column=3, sticky=tk.W)
-    tk.Label(f2, text="s").grid(row=1, column=3, sticky=tk.W)
+    #tk.Label(f2, text="s").grid(row=1, column=3, sticky=tk.W)
 
     f2.pack(fill='both')
 
@@ -472,10 +470,10 @@ if __name__ == '__main__':
     #win.bind("<Escape>", event_kb_esc)
     win.mainloop()
     #win.mainloop()
-    print("window terminated.")
+    #print("window terminated.")
 
     if worker_thread:
-        print("worker stopped.")
+    #    print("worker stopped.")
         worker_thread.stop()
 
     #ShowWindow()
