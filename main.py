@@ -124,7 +124,7 @@ def event_kb_f3():
         else:
             macro_proseka(iter=i)
 
-        msg += "{} s.".format(time.time()-start)
+        msg += "{} s.".format(int(time.time()-start))
 
         mbox.insert(1.0, msg + "\n")
 
