@@ -120,9 +120,9 @@ def event_kb_f3():
         if worker_thread.stopped():
             return
         if repeat_rate != 0:
-            macro_proseka(iter=i, refill=((i % repeat_rate == 0)))
+            macro_proseka(iter=i, refill=((i % repeat_rate == 0)), no_event=not var_c1.get())
         else:
-            macro_proseka(iter=i)
+            macro_proseka(iter=i, no_event=not var_c1.get())
 
         msg += "{} s.".format(int(time.time()-start))
 
@@ -146,7 +146,7 @@ def run_macro():
 
 # macro_once
 # assumes 1280 x 720
-def macro_proseka(iter=0, refill=False):
+def macro_proseka(iter=0, refill=False, no_event=False):
     a = GetWindow(conf["PLAYER_WINDOWNAME"])
     if a == -1:
         return
@@ -228,31 +228,32 @@ def macro_proseka(iter=0, refill=False):
    # print("> 연타 종료")
     
 
-    time.sleep(randint(8, 10) + random())
+    time.sleep(randint(9, 10) + random())
    # print("> 아무 곳이나 클릭")
     move_and_click(center)
     if worker_thread.stopped():
         return
     
-    time.sleep(randint(8, 10) + random())
+    time.sleep(randint(9, 10) + random())
    # print("> 보상 보러 가기")
     move_and_click(button_yes)
     if worker_thread.stopped():
         return
     
-    time.sleep(randint(8, 10) + random())
+    time.sleep(randint(9, 10) + random())
    # print("> 라이브 보상 보러 가기")
     move_and_click(button_yes)
     if worker_thread.stopped():
         return
 
-    time.sleep(randint(8, 10) + random())
-   # print("> 이벤트 결과 보러 가기")
-    move_and_click(button_yes)
-    if worker_thread.stopped():
-        return
+    if not no_event:
+        time.sleep(randint(9, 10) + random())
+        # print("> 이벤트 결과 보러 가기")
+        move_and_click(button_yes)
+        if worker_thread.stopped():
+            return
 
-    time.sleep(randint(8, 10) + random())
+    time.sleep(randint(9, 10) + random())
    # print("> 악곡 선택 가기")
     move_and_click(button_goto_init)
     if worker_thread.stopped():
@@ -431,10 +432,15 @@ if __name__ == '__main__':
     e4 = tk.Entry(f2, width=5)
     e4.insert(0, string=conf["PROSEKA_REFILL_RATE"])
     
+    var_c1 = tk.IntVar()
+    c1 = tk.Checkbutton(f2, text="이벤트 진행 중", variable=var_c1)#, command=lambda:print(var_c1.get()))
+    c1.select()
+
     tk.Label(f2, text="클릭 속도").grid(row=0, column=0, sticky=tk.W)
     #tk.Label(f2, text="딜레이").grid(row=1, column=0, sticky=tk.W)
     tk.Label(f2, text="반복 횟수").grid(row=1, column=0, sticky=tk.W)
     tk.Label(f2, text="리필 주기").grid(row=2, column=0, sticky=tk.W)
+    tk.Label(f2, text="이벤트").grid(row=3, column=0, sticky=tk.W)
     
     s1.grid(row=0, column=1)
     l1.grid(row=0, column=2)
@@ -442,6 +448,8 @@ if __name__ == '__main__':
     #l2.grid(row=1, column=2)
     e3.grid(row=1, column=1, sticky=tk.W)
     e4.grid(row=2, column=1, sticky=tk.W)
+
+    c1.grid(row=3, column=1, sticky=tk.W)
 
     tk.Label(f2, text="clicks/s").grid(row=0, column=3, sticky=tk.W)
     #tk.Label(f2, text="s").grid(row=1, column=3, sticky=tk.W)
