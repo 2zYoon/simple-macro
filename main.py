@@ -324,6 +324,19 @@ def update_click_rate(e):
 def update_delay_rate(e):
     l2["text"] = str(int(s2.get()) / 10)
 
+def update_refill_period(delta):
+    tmp = int(e4.get()) + delta
+    tmp = max(0, tmp)
+
+    e4.delete(0, 10)
+    e4.insert(0, string=str(tmp))
+
+def update_repetition(delta):
+    tmp = int(e3.get()) + delta
+    tmp = max(0, tmp)
+
+    e3.delete(0, 10)
+    e3.insert(0, string=str(tmp))
 
 def worker_rep_click():
     while 1:
@@ -441,7 +454,8 @@ if __name__ == '__main__':
     tk.Label(f2, text="반복 횟수").grid(row=1, column=0, sticky=tk.W)
     tk.Label(f2, text="리필 주기").grid(row=2, column=0, sticky=tk.W)
     tk.Label(f2, text="이벤트").grid(row=3, column=0, sticky=tk.W)
-    
+
+
     s1.grid(row=0, column=1)
     l1.grid(row=0, column=2)
     #s2.grid(row=1, column=1)
@@ -450,6 +464,14 @@ if __name__ == '__main__':
     e4.grid(row=2, column=1, sticky=tk.W)
 
     c1.grid(row=3, column=1, sticky=tk.W)
+
+    # up/down repetition
+    tk.Button(f2, text="▼", command=lambda: update_repetition(-10)).grid(row=1, column=2, sticky=tk.W)
+    tk.Button(f2, text="▲", command=lambda: update_repetition(10)).grid(row=1, column=3, sticky=tk.W)
+
+    # up/down refill period
+    tk.Button(f2, text="▼", command=lambda: update_refill_period(-1)).grid(row=2, column=2, sticky=tk.W)
+    tk.Button(f2, text="▲", command=lambda: update_refill_period(1)).grid(row=2, column=3, sticky=tk.W)
 
     tk.Label(f2, text="clicks/s").grid(row=0, column=3, sticky=tk.W)
     #tk.Label(f2, text="s").grid(row=1, column=3, sticky=tk.W)
